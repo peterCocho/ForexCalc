@@ -1,25 +1,26 @@
 package com.one;
 
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class ConvertirMoneda {
-    public static void convertir(String monedaBase, String monedaObjetivo, ConsultaMoneda consulta, Scanner scanner) {
-        double cantidad;
+    public static void convertir(String monedaBase, String monedaObjetivo, ConsultaMoneda consulta, double cantidad) {
         double cantidadConvertida;
 
-        Monedas monedas = consulta.buscaMonedabuscaMoneda(monedaBase, monedaObjetivo);
-        System.out.println("La taza de conversion para hoy\nl " + monedaBase + " * " + monedas.conversion_rate() + " " + monedaObjetivo);
-        System.out.println("Ingrese la cantidad de: " + monedaBase);
-        cantidad = Double.parseDouble(scanner.nextLine());
+        Monedas monedas = consulta.buscaMoneda(monedaBase, monedaObjetivo);
+        JOptionPane.showMessageDialog(null, "La tasa de conversión para hoy\n1 " + monedaBase + " => " + monedas.conversion_rate() + " " + monedaObjetivo);
         cantidadConvertida = cantidad * monedas.conversion_rate();
-        System.out.println(cantidad + " " + monedaBase + " * " + cantidadConvertida + " " + monedas.target_code());
+        JOptionPane.showMessageDialog(null, cantidad + " " + monedaBase + " => " + cantidadConvertida + " " + monedas.target_code());
     }
 
-    public static void convertirOtraMoneda (ConsultaMoneda consulta, Scanner scanner) {
-        System.out.println("Ingrese el codigo de la moneda base: ");
-        String monedaBase = scanner.nextLine().toUpperCase();
-        System.out.println("Ingrese el codigo de la moneda objetivo: ");
-        String monedaObjetivo = scanner.nextLine().toUpperCase();
-        convertir(monedaBase, monedaObjetivo, consulta, scanner);
+    public static void convertirOtraMoneda(ConsultaMoneda consulta, double cantidad) {
+        String monedaBase = JOptionPane.showInputDialog("Ingrese el código de la moneda base:").toUpperCase();
+        String monedaObjetivo = JOptionPane.showInputDialog("Ingrese el código de la moneda objetivo:").toUpperCase();
+
+        if (monedaBase == null || monedaBase.isEmpty() || monedaObjetivo == null || monedaObjetivo.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Error: Los códigos de moneda no pueden estar vacíos.");
+            return;
+        }
+
+        convertir(monedaBase, monedaObjetivo, consulta, cantidad);
     }
 }
